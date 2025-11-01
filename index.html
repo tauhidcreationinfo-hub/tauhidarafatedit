@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <title>Web Designer Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Hide scrollbar for all browsers but allow scrolling */
+    body::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, and Opera */
+    }
+    body {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+      background-color: #020617; /* bg-slate-950 */
+      color: #e2e8f0; /* text-slate-200 */
+    }
+
+    .realistic-glass {
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+      backdrop-filter: blur(10px) brightness(1.1);
+      -webkit-backdrop-filter: blur(10px) brightness(1.1);
+      border-radius: 1.25rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 
+        inset 2px 2px 4px rgba(255, 255, 255, 0.2),
+        inset -3px -3px 5px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .realistic-glass:hover {
+        transform: scale(1.03);
+        box-shadow: 
+            0 20px 40px rgba(0, 0, 0, 0.3),
+            inset 2px 2px 4px rgba(255, 255, 255, 0.2),
+            inset -3px -3px 5px rgba(0, 0, 0, 0.3);
+    }
+    
+    .btn-glass-primary {
+      background: linear-gradient(145deg, rgba(59, 130, 246, 0.6), rgba(37, 99, 235, 0.4));
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 1.25rem; /* Match .realistic-glass */
+      border: 1px solid rgba(59, 130, 246, 0.5);
+      box-shadow: 
+        inset 2px 2px 4px rgba(90, 150, 255, 0.3), /* Lighter blue inset */
+        inset -3px -3px 5px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+    }
+
+    .btn-glass-primary:hover {
+        transform: scale(1.03);
+        box-shadow: 
+            0 20px 40px rgba(37, 99, 235, 0.3), /* blue shadow */
+            inset 2px 2px 4px rgba(90, 150, 255, 0.3),
+            inset -3px -3px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-glass-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .btn-glass-primary:disabled:hover {
+      transform: none;
+      box-shadow: 
+        inset 2px 2px 4px rgba(90, 150, 255, 0.3),
+        inset -3px -3px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .header-glass {
+      /* More transparent base for a clearer glass effect */
+      background: rgba(15, 23, 42, 0.4); /* slate-900 with 40% opacity */
+      /* Higher blur for a smoother look, with saturation to pop colors behind it */
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border-radius: 1.5rem;
+      /* A very subtle border to catch the light */
+      border: 1px solid rgba(255, 255, 255, 0.125);
+      /* Softer shadow for a more natural floating appearance */
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    }
+
+    .footer-glass {
+        background: rgba(2, 6, 23, 0.6); /* bg-slate-950/60 */
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-fade-in {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+
+    @keyframes gradient-flow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .animate-gradient-flow {
+      background-size: 300% 300%;
+      animation: gradient-flow 3s ease infinite;
+    }
+
+    @keyframes gentle-float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    .animate-gentle-float {
+      animation-name: gentle-float;
+      animation-duration: 3s;
+      animation-iteration-count: infinite;
+      animation-timing-function: ease-in-out;
+    }
+
+    /* For 3D scroll effect */
+    #hero {
+      perspective: 1000px;
+      transform-style: preserve-3d;
+    }
+
+    /* Performance optimization for scroll-animated elements */
+    #hero > div, #hero > h1, #hero > p {
+      will-change: transform, opacity;
+    }
+
+    /* --- NEW UNIFIED MOBILE MENU ANIMATION SYSTEM --- */
+
+    /* 1. Header Expansion via Max-Height Animation */
+    #mobile-menu {
+      max-height: 0;
+      transition: max-height 500ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .menu-grid-wrapper.open #mobile-menu {
+      max-height: 300px; /* Adjust if menu content grows */
+    }
+
+    /* 2. Animating Hamburger Icon */
+    .hamburger-button {
+      position: relative;
+      width: 2.5rem; /* 40px */
+      height: 2.5rem; /* 40px */
+    }
+
+    .hamburger-box {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 24px;
+      height: 18px;
+      transform: translate(-50%, -50%);
+    }
+
+    .hamburger-bar-top,
+    .hamburger-bar-middle,
+    .hamburger-bar-bottom {
+      position: absolute;
+      left: 0;
+      width: 24px;
+      height: 2px;
+      background-color: currentColor;
+      border-radius: 2px;
+      transition: transform 300ms ease-in-out, opacity 300ms ease-in-out;
+    }
+    
+    .hamburger-bar-top { top: 0; transform-origin: center; }
+    .hamburger-bar-middle { top: 8px; transform-origin: center; }
+    .hamburger-bar-bottom { top: 16px; transform-origin: center; }
+
+    /* Open State Transformations */
+    .hamburger-button.open .hamburger-bar-top {
+      transform: translateY(8px) rotate(45deg);
+    }
+
+    .hamburger-button.open .hamburger-bar-middle {
+      opacity: 0;
+    }
+
+    .hamburger-button.open .hamburger-bar-bottom {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+    
+    /* 2. Mobile Header Logo & Hamburger Positioning */
+    @media (max-width: 767px) { /* md breakpoint */
+      .mobile-header-logo {
+        position: absolute;
+        left: 1rem;
+        opacity: 1;
+        transition: left 700ms cubic-bezier(0.4, 0, 0.2, 1), 
+                    transform 700ms cubic-bezier(0.4, 0, 0.2, 1),
+                    opacity 700ms cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .mobile-header-logo.centered {
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0.9;
+      }
+
+      .mobile-header-hamburger {
+        position: absolute;
+        right: 0rem;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    }
+
+    /* 3. Staggered Animation for Mobile Menu Items (Unified In & Out) */
+    .mobile-menu-item {
+      opacity: 0;
+      transform: translateY(-20px);
+      transition-property: transform, opacity;
+      transition-duration: 500ms;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* EXIT delays (bottom to top, happens when .open is removed) */
+    .mobile-menu-item:nth-child(4) { transition-delay: 0ms; }
+    .mobile-menu-item:nth-child(3) { transition-delay: 50ms; }
+    .mobile-menu-item:nth-child(2) { transition-delay: 100ms; }
+    .mobile-menu-item:nth-child(1) { transition-delay: 150ms; }
+
+    /* Open State for Menu Items */
+    .menu-grid-wrapper.open .mobile-menu-item {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ENTRANCE delays (top-to-bottom, overrides default delays) */
+    .menu-grid-wrapper.open .mobile-menu-item:nth-child(1) { transition-delay: 250ms; }
+    .menu-grid-wrapper.open .mobile-menu-item:nth-child(2) { transition-delay: 300ms; }
+    .menu-grid-wrapper.open .mobile-menu-item:nth-child(3) { transition-delay: 350ms; }
+    .menu-grid-wrapper.open .mobile-menu-item:nth-child(4) { transition-delay: 400ms; }
+    
+    /* --- Ripple Effect for All Clickable Elements --- */
+    .has-ripple {
+      position: relative;
+      overflow: hidden;
+      -webkit-tap-highlight-color: transparent; /* Prevent blue tap highlight on mobile */
+      outline: none; /* Remove default blue outline */
+      /* For smooth pop and glow transition */
+      transition: transform 150ms ease-out, box-shadow 300ms ease-in-out, border-color 300ms ease-in-out;
+    }
+
+    /* Remove focus ring that can appear after click */
+    .has-ripple:focus {
+      outline: none;
+    }
+
+    .has-ripple:active {
+      transform: perspective(800px) scale(1.05) translateZ(15px) rotateX(-8deg); /* 3D Pop effect */
+      /* Deeper shadow for 3D effect, preserving inset glass style */
+      box-shadow: 
+        inset 2px 2px 4px rgba(255, 255, 255, 0.2),
+        inset -3px -3px 5px rgba(0, 0, 0, 0.3),
+        0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    /* The 'selected' state style for the button */
+    .active-glow {
+      border-color: rgba(96, 165, 250, 0.6);
+    }
+
+    .ripple-effect {
+      position: absolute;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.4); /* Water drop color */
+      transform: scale(0);
+      animation: ripple 600ms linear;
+      pointer-events: none; /* Make sure it doesn't interfere with clicks */
+    }
+
+    @keyframes ripple {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+
+    /* Juggling Icon Animation */
+    @keyframes juggling-icon {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-5px);
+      }
+    }
+
+    .juggling-icon {
+      animation-name: juggling-icon;
+      animation-duration: 3.2s;
+      animation-iteration-count: infinite;
+      animation-timing-function: ease-in-out;
+    }
+
+    .juggling-icon-1 { animation-delay: 0s; }
+    .juggling-icon-2 { animation-delay: 0.8s; }
+    .juggling-icon-3 { animation-delay: 1.6s; }
+    .juggling-icon-4 { animation-delay: 2.4s; }
+
+    /* --- GLOBAL SCROLL ANIMATION SYSTEM --- */
+    .scroll-animate {
+      opacity: 0;
+      transform: perspective(800px) rotateX(-30deg) translateY(60px);
+      will-change: opacity, transform;
+      transition: opacity 700ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  transform 700ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .scroll-animate.is-visible {
+      opacity: 1;
+      transform: perspective(800px) rotateX(0) translateY(0);
+    }
+  </style>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="importmap">
+{
+  "imports": {
+    "rxjs": "https://aistudiocdn.com/rxjs@^7.8.2?conditions=es2015",
+    "rxjs/operators": "https://aistudiocdn.com/rxjs@^7.8.2/operators?conditions=es2015",
+    "rxjs/ajax": "https://aistudiocdn.com/rxjs@^7.8.2/ajax?conditions=es2015",
+    "rxjs/webSocket": "https://aistudiocdn.com/rxjs@^7.8.2/webSocket?conditions=es2015",
+    "rxjs/testing": "https://aistudiocdn.com/rxjs@^7.8.2/testing?conditions=es2015",
+    "rxjs/fetch": "https://aistudiocdn.com/rxjs@^7.8.2/fetch?conditions=es2015",
+    "@angular/compiler": "https://next.esm.sh/@angular/compiler@^20.3.9?external=rxjs",
+    "@angular/platform-browser": "https://next.esm.sh/@angular/platform-browser@^20.3.9?external=rxjs",
+    "@angular/core": "https://next.esm.sh/@angular/core@^20.3.9?external=rxjs",
+    "@angular/common": "https://next.esm.sh/@angular/common@^20.3.9?external=rxjs",
+    "@google/genai": "https://esm.sh/@google/genai"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body class="overflow-x-hidden antialiased">
+  <app-root></app-root>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+  <script type="text/babel" data-type="module" src="index.tsx"></script>
+</body>
+</html>
