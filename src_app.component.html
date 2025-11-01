@@ -1,0 +1,397 @@
+<!-- Main container with Aurora background effect -->
+<div #vantaContainer class="relative min-h-screen bg-slate-950 text-slate-300 font-sans isolate overflow-x-hidden">
+  <div class="relative z-10">
+    <!-- HEADER -->
+    <header class="fixed top-4 left-1 right-1 z-50 header-glass">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="menu-grid-wrapper" [class.open]="mobileMenuOpen()">
+          <!-- Grid Row 1: The Visible Header Bar -->
+          <div class="flex items-center justify-between h-16 relative">
+            <div class="flex-shrink-0 md:static mobile-header-logo" [class.centered]="mobileMenuOpen()">
+              <a (click)="scrollTo('hero'); applyRipple($event)" class="text-2xl font-bold cursor-pointer has-ripple rounded-md">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-400 animate-gradient-flow">Be creative</span>
+              </a>
+            </div>
+            <div class="hidden md:block">
+              <div class="ml-10 flex items-baseline space-x-4">
+                @for (link of navLinks(); track link.sectionId) {
+                  <a (click)="scrollTo(link.sectionId); applyRipple($event)" class="has-ripple text-slate-300 hover:bg-slate-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium cursor-pointer">{{ link.label }}</a>
+                }
+              </div>
+            </div>
+            <div class="-mr-2 flex md:hidden mobile-header-hamburger">
+              <button (click)="toggleMobileMenu(); applyRipple($event)" type="button"
+                      class="hamburger-button has-ripple inline-flex items-center justify-center rounded-md text-slate-400 hover:text-white focus:outline-none"
+                      [class.open]="mobileMenuOpen()"
+                      aria-controls="mobile-menu"
+                      [attr.aria-expanded]="mobileMenuOpen()">
+                <span class="sr-only">Open main menu</span>
+                <div class="hamburger-box">
+                  <div class="hamburger-bar-top"></div>
+                  <div class="hamburger-bar-middle"></div>
+                  <div class="hamburger-bar-bottom"></div>
+                </div>
+              </button>
+            </div>
+          </div>
+          <!-- Grid Row 2: The Mobile Menu Content -->
+          <div id="mobile-menu" class="md:hidden overflow-hidden">
+            <div class="flex flex-col items-center py-4 space-y-3">
+              @for (link of navLinks(); track link.sectionId) {
+                <a (click)="scrollTo(link.sectionId); applyRipple($event)" class="mobile-menu-item has-ripple text-slate-300 hover:bg-slate-700 hover:text-white block px-3 py-2 rounded-md text-base font-semibold cursor-pointer">{{ link.label }}</a>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- BLUR BACKDROP -->
+    <div (click)="toggleMobileMenu()"
+      class="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-opacity ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 pointer-events-none"
+      [class.duration-700]="mobileMenuOpen()"
+      [class.duration-800]="!mobileMenuOpen()"
+      [class.delay-300]="!mobileMenuOpen()"
+      [class.opacity-100]="mobileMenuOpen()"
+      [class.pointer-events-auto]="mobileMenuOpen()">
+    </div>
+
+    <main class="pt-28"> <!-- Increased padding to account for new header position -->
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- HERO SECTION -->
+        <section id="hero" class="text-center py-20 lg:py-32">
+          <h1 #heroTitle class="text-4xl sm:text-5xl lg:text-7xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-blue-500 to-teal-400 animate-gradient-flow [text-shadow:0_4px_20px_rgba(59,130,246,0.5)]">
+             TAUHID ARAFAT
+          </h1>
+          <div #heroBadge class="realistic-glass !rounded-full inline-block px-5 py-2 mt-2">
+            <span class="font-semibold text-sm text-transparent bg-clip-text bg-gradient-to-r from-white to-cyan-400 animate-gradient-flow">VIDEO EDITOR & MOTION ARTIST</span>
+          </div>
+          <p #heroParagraph class="mt-6 max-w-2xl mx-auto text-lg text-slate-400">
+            Professional video editor specializing in cinematic storytelling and dynamic motion graphics. Turning raw footage into beautiful, compelling narratives.
+          </p>
+          <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a #heroWorkButton (click)="scrollTo('projects'); applyRipple($event)" class="has-ripple btn-glass-primary sm:w-auto inline-flex items-center justify-center px-12 py-3 text-base font-medium text-white cursor-pointer">
+              <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+              </svg>
+              View My Work
+            </a>
+            <a #heroContactButton (click)="scrollTo('contact'); applyRipple($event)" class="has-ripple realistic-glass sm:w-auto inline-flex items-center justify-center px-12 py-3 text-base font-medium text-white cursor-pointer">
+              Get in Touch
+            </a>
+          </div>
+        </section>
+
+        <!-- STATS SECTION -->
+        <section id="stats" class="py-12 lg:py-20">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+            @for (stat of stats(); track stat.label; let i = $index) {
+              <div class="scroll-animate realistic-glass p-8 cursor-pointer" [style.animation-delay]="i * 100 + 'ms'">
+                <p class="mt-2 animate-gentle-float text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-slate-100" [style.animation-delay]="i * 250 + 'ms'">{{ stat.value }}</p>
+                <p class="mt-2 text-lg text-slate-400 font-semibold">{{ stat.label }}</p>
+              </div>
+            }
+          </div>
+        </section>
+
+        <!-- SERVICES SECTION -->
+        <section id="services" class="py-12 lg:py-20">
+          <div class="text-center mb-12">
+            <h2 class="scroll-animate text-3xl sm:text-4xl font-bold text-white">My Services</h2>
+            <p class="scroll-animate mt-4 max-w-2xl mx-auto text-lg text-slate-400" style="animation-delay: 100ms;">Editing, coloring, and animating visuals that tell a story.</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            @for (service of services(); track service.title; let i = $index) {
+              <div class="scroll-animate realistic-glass p-8 flex flex-col h-full cursor-pointer" [style.animation-delay]="i * 150 + 'ms'">
+                <h3 class="text-xl font-semibold text-white mb-2">{{ service.title }}</h3>
+                <p class="text-slate-400 flex-grow">{{ service.description }}</p>
+                <ul class="mt-6 space-y-2">
+                  @for (feature of service.features; track feature) {
+                    <li class="flex items-center">
+                      <svg class="w-5 h-5 mr-3 text-blue-400 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                      </svg>
+                      <span class="text-slate-300">{{ feature }}</span>
+                    </li>
+                  }
+                </ul>
+              </div>
+            }
+          </div>
+        </section>
+
+        <!-- PROJECTS SECTION -->
+        <section id="projects" class="py-12 lg:py-20">
+          <div class="text-center mb-12">
+            <h2 class="scroll-animate text-3xl sm:text-4xl font-bold text-white">Recent Projects</h2>
+            <p class="scroll-animate mt-4 max-w-2xl mx-auto text-lg text-slate-400" style="animation-delay: 100ms;">Explore my latest work across different formats and styles.</p>
+          </div>
+          <div class="flex justify-center flex-wrap gap-2 sm:gap-4 mb-10">
+            @for (category of projectCategories(); track category; let i = $index) {
+              <button (click)="onFilterClick($event, category)"
+                class="scroll-animate has-ripple realistic-glass !rounded-full !py-2 !px-4 text-sm font-medium"
+                [style.animation-delay]="i * 80 + 'ms'"
+                [class.text-white]="selectedCategory() === category"
+                [class.active-glow]="selectedCategory() === category">
+                {{ category }}
+              </button>
+            }
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            @for (project of filteredProjects(); track project.title; let i = $index) {
+              <div #projectCard class="scroll-animate realistic-glass p-6 flex flex-col gap-4 group cursor-pointer" [style.animation-delay]="i * 100 + 'ms'">
+                <div class="overflow-hidden rounded-lg">
+                  <img [src]="project.imageUrl" alt="{{ project.title }}" width="600" height="400" class="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-110">
+                </div>
+                <div>
+                  <span class="inline-block bg-blue-500/20 text-blue-300 text-xs font-semibold px-2 py-1 rounded-full mb-2">{{ project.category }}</span>
+                  <h3 class="text-xl font-semibold text-white mt-2">{{ project.title }}</h3>
+                  <div class="flex justify-between items-center mt-4 text-slate-400 text-sm">
+                    <span>
+                      <svg class="inline-block w-4 h-4 mr-1 align-middle" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                      {{ project.duration }}
+                    </span>
+                    <a [href]="project.link" (click)="applyRipple($event)" target="_blank" class="has-ripple rounded-md p-1 -m-1 inline-flex items-center text-blue-400 hover:text-blue-300 font-semibold transition-colors">
+                      Live Demo
+                      <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </section>
+
+        <!-- AI STORYBOARD ASSISTANT SECTION -->
+        <section id="ai-assistant" class="py-12 lg:py-20">
+          <div class="scroll-animate realistic-glass p-8 md:p-12 transition-all duration-500 ease-in-out" 
+               [class.min-h-[90vh]]="chatHistory().length > 0">
+            @if (chatHistory().length === 0) {
+              <!-- Compact Initial View -->
+              <div class="max-w-xl mx-auto text-center animate-fade-in">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white">AI Storyboard Assistant</h2>
+                <p class="mt-4 text-lg text-slate-400">
+                  Stuck on your next edit? Describe your concept, and let the AI generate a storyboard and shot list for you.
+                </p>
+                <form (submit)="$event.preventDefault(); sendChatMessage()" class="mt-8 text-left">
+                  <label for="ai-prompt-initial" class="block text-sm font-medium text-slate-300 mb-2">Describe your video idea</label>
+                  <textarea id="ai-prompt-initial" name="ai-prompt" rows="3"
+                    class="block w-full rounded-xl border-0 bg-white/5 py-3 px-4 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6 transition"
+                    placeholder="e.g., A fast-paced commercial for a new sports drink"
+                    [value]="aiPrompt()"
+                    (input)="updateAiPrompt($event)"></textarea>
+                  <div class="text-center">
+                    <button type="submit" (click)="applyRipple($event)" [disabled]="aiLoading() || !aiPrompt().trim()"
+                      class="has-ripple btn-glass-primary w-full sm:w-auto inline-flex items-center justify-center px-8 py-3 mt-6 text-base font-medium text-white cursor-pointer">
+                      <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                         <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.898 20.553L16.5 21.75l-.398-1.197a3.375 3.375 0 00-2.456-2.456L12.75 18l1.197-.398a3.375 3.375 0 002.456-2.456L16.5 14.25l.398 1.197a3.375 3.375 0 002.456 2.456L20.25 18l-1.197.398a3.375 3.375 0 00-2.456 2.456z" />
+                      </svg>
+                      <span>Generate Ideas</span>
+                    </button>
+                  </div>
+                </form>
+              </div>
+            } @else {
+              <!-- Expanded Chat/Storyboard View -->
+              <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 animate-fade-in">
+                <!-- Chat Interface Column -->
+                <div class="lg:col-span-5 flex flex-col">
+                  <h2 class="text-3xl sm:text-4xl font-bold text-white">AI Storyboard Assistant</h2>
+                  <p class="mt-4 text-lg text-slate-400">
+                    Chat with the AI to brainstorm a video concept. Describe your idea, then ask for changes to refine it.
+                  </p>
+                  <!-- Chat History -->
+                  <div #chatContainer class="mt-6 flex-grow h-96 min-h-96 bg-black/20 rounded-xl p-4 space-y-4 overflow-y-auto border border-white/10">
+                    @for (message of chatHistory(); track $index) {
+                      <div class="flex" [class.justify-end]="message.role === 'user'" [class.justify-start]="message.role === 'model'">
+                        <div class="max-w-xs lg:max-w-sm rounded-lg px-4 py-2" 
+                             [class.bg-blue-800/50]="message.role === 'user'"
+                             [class.bg-slate-700/50]="message.role === 'model'">
+                          <p class="text-sm text-slate-200">{{ message.text }}</p>
+                        </div>
+                      </div>
+                    }
+                    @if (aiLoading()) {
+                       <div class="flex justify-start">
+                          <div class="max-w-xs lg:max-w-sm rounded-lg px-4 py-2 bg-slate-700/50">
+                              <div class="flex items-center gap-2">
+                                  <div class="w-2 h-2 bg-slate-400 rounded-full animate-pulse [animation-delay:-0.3s]"></div>
+                                  <div class="w-2 h-2 bg-slate-400 rounded-full animate-pulse [animation-delay:-0.15s]"></div>
+                                  <div class="w-2 h-2 bg-slate-400 rounded-full animate-pulse"></div>
+                              </div>
+                          </div>
+                      </div>
+                    }
+                  </div>
+                  <!-- Chat Input Form -->
+                  <form (submit)="$event.preventDefault(); sendChatMessage()" class="mt-4">
+                     <div class="flex items-center gap-2">
+                        <textarea id="ai-prompt" name="ai-prompt" rows="1"
+                          class="block w-full rounded-xl border-0 bg-white/5 py-3 px-4 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6 transition resize-none"
+                          placeholder="e.g., Make it more cinematic"
+                          (keydown.enter)="$event.preventDefault(); sendChatMessage()"
+                          [value]="aiPrompt()"
+                          (input)="updateAiPrompt($event)"></textarea>
+                        <button type="submit" (click)="applyRipple($event)" [disabled]="aiLoading() || !aiPrompt().trim()"
+                          class="has-ripple btn-glass-primary !rounded-xl inline-flex items-center justify-center p-3 text-base font-medium text-white cursor-pointer flex-shrink-0">
+                           <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                           </svg>
+                        </button>
+                     </div>
+                  </form>
+                </div>
+
+                <!-- Storyboard Display Column -->
+                <div class="lg:col-span-7 flex items-center justify-center min-h-[500px]">
+                  @if (aiError() && !aiStoryboard()) {
+                    <div class="text-center text-red-400 animate-fade-in">
+                      <p>{{ aiError() }}</p>
+                    </div>
+                  } @else if (aiStoryboard(); as response) {
+                     <!-- Storyboard Preview -->
+                    <div class="w-full animate-fade-in rounded-lg border border-white/20 p-6 shadow-2xl bg-slate-800/50 h-full overflow-y-auto">
+                      <h3 class="text-2xl font-bold text-white">{{ response.storyboard.title }}</h3>
+                      <p class="text-sm italic text-slate-400 mt-2 pb-4 border-b border-white/10">{{ response.storyboard.logline }}</p>
+                      <div class="mt-4 space-y-4">
+                        @for(shot of response.storyboard.shotList; track shot.shotNumber) {
+                          <div class="grid grid-cols-12 gap-4">
+                            <div class="col-span-2 text-center">
+                                <span class="text-xs text-slate-500">SHOT</span>
+                                <p class="text-2xl font-bold text-blue-400">{{ shot.shotNumber }}</p>
+                            </div>
+                            <div class="col-span-10">
+                                <p class="font-semibold text-slate-200">{{ shot.cameraAngle }}</p>
+                                <p class="text-sm text-slate-400">{{ shot.description }}</p>
+                            </div>
+                          </div>
+                        }
+                      </div>
+                    </div>
+                  } @else {
+                    <div class="text-center text-slate-500">
+                       <svg class="w-16 h-16 mx-auto mb-4 text-slate-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.898 20.553L16.5 21.75l-.398-1.197a3.375 3.375 0 00-2.456-2.456L12.75 18l1.197-.398a3.375 3.375 0 002.456-2.456L16.5 14.25l.398 1.197a3.375 3.375 0 002.456 2.456L20.25 18l-1.197.398a3.375 3.375 0 00-2.456 2.456z" />
+                       </svg>
+                       <p>Your generated storyboard concept will appear here.</p>
+                       <p class="text-xs mt-2">Start by typing a message in the chat box.</p>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        </section>
+        
+        <!-- CONTACT SECTION -->
+        <section id="contact" class="pt-12 lg:pt-20 pb-8">
+          <div class="text-center mb-12">
+            <h2 class="scroll-animate text-3xl sm:text-4xl font-bold text-white">Get in Touch</h2>
+            <p class="scroll-animate mt-4 max-w-2xl mx-auto text-lg text-slate-400" style="animation-delay: 100ms;">Have a idea in mind or just want to say hello? I'd love to hear from you.</p>
+          </div>
+          <div class="max-w-3xl mx-auto">
+            <div class="scroll-animate realistic-glass p-8 min-h-[480px] flex items-center justify-center" style="animation-delay: 200ms;">
+              @if (formState() === 'success') {
+                <div class="text-center animate-fade-in">
+                  <h3 class="text-2xl font-semibold text-green-400">Message Sent!</h3>
+                  <p class="mt-4 text-slate-300">Thank you for reaching out. I'll get back to you as soon as possible.</p>
+                </div>
+              } @else {
+                <form (submit)="handleContactSubmit($event)" class="space-y-6 w-full animate-fade-in">
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                      <label for="name" class="block text-sm font-medium text-slate-300">Your Name</label>
+                      <input type="text" name="name" id="name" autocomplete="name" required class="mt-2 block w-full rounded-xl border-0 bg-white/5 py-3 px-4 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6 transition">
+                    </div>
+                    <div>
+                      <label for="email" class="block text-sm font-medium text-slate-300">Your Email</label>
+                      <input type="email" name="email" id="email" autocomplete="email" required class="mt-2 block w-full rounded-xl border-0 bg-white/5 py-3 px-4 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6 transition">
+                    </div>
+                  </div>
+                  <div>
+                    <label for="message" class="block text-sm font-medium text-slate-300">Your Message</label>
+                    <textarea id="message" name="message" rows="4" required class="mt-2 block w-full rounded-xl border-0 bg-white/5 py-3 px-4 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6 transition"></textarea>
+                  </div>
+                  <div>
+                    <button type="submit" (click)="applyRipple($event)" [disabled]="formState() === 'submitting'"
+                      class="has-ripple btn-glass-primary w-full sm:w-auto inline-flex items-center justify-center px-8 py-3 mt-6 text-base font-medium text-white cursor-pointer">
+                      @if (formState() === 'submitting') {
+                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span>Sending...</span>
+                      } @else {
+                        <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                        </svg>
+                        <span>Send Message</span>
+                      }
+                    </button>
+                  </div>
+                  @if (formMessage()) {
+                    <p class="text-sm mt-4 text-center" [class.text-red-400]="formState() === 'error'">
+                      {{ formMessage() }}
+                    </p>
+                  }
+                </form>
+              }
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+    
+    <!-- CONNECT WITH ME -->
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center">
+      <h2 class="scroll-animate text-3xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-400 animate-gradient-flow">Connect With Me</h2>
+      <div class="scroll-animate flex justify-center items-center space-x-4" style="animation-delay: 100ms;">
+        <!-- Instagram -->
+        <div>
+          <a href="https://www.instagram.com/itstauhidarafat" target="_blank" rel="noopener noreferrer" (click)="applyRipple($event)" class="has-ripple realistic-glass !rounded-full w-12 h-12 flex items-center justify-center group juggling-icon juggling-icon-1">
+            <span class="sr-only">Instagram</span>
+            <svg fill="currentColor" viewBox="0 0 24 24" class="w-6 h-6 text-slate-300 group-hover:text-white transition-colors" aria-hidden="true">
+              <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 012.122 2.122c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-2.122 2.122c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.012-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-2.122-2.122c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049-1.064.218-1.791.465-2.427a4.902 4.902 0 012.122-2.122c.636-.247 1.363.416 2.427.465C9.53 2.013 9.884 2 12.315 2zM8.447 12.315a3.868 3.868 0 117.736 0 3.868 3.868 0 01-7.736 0zM12.315 6.162a6.153 6.153 0 100 12.306 6.153 6.153 0 000-12.306zM16.92 7.577a1.44 1.44 0 11-2.88 0 1.44 1.44 0 012.88 0z" clip-rule="evenodd" />
+            </svg>
+          </a>
+        </div>
+        <!-- LinkedIn -->
+        <div>
+          <a href="https://www.linkedin.com/in/itstauhidarafat/" target="_blank" rel="noopener noreferrer" (click)="applyRipple($event)" class="has-ripple realistic-glass !rounded-full w-12 h-12 flex items-center justify-center group juggling-icon juggling-icon-2">
+            <span class="sr-only">LinkedIn</span>
+            <svg fill="currentColor" viewBox="0 0 24 24" class="w-6 h-6 text-slate-300 group-hover:text-white transition-colors" aria-hidden="true">
+              <path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.25 6.5 1.75 1.75 0 016.5 8.25zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z" />
+            </svg>
+          </a>
+        </div>
+        <!-- Facebook -->
+        <div>
+          <a href="https://www.facebook.com/itstauhidarafat" target="_blank" rel="noopener noreferrer" (click)="applyRipple($event)" class="has-ripple realistic-glass !rounded-full w-12 h-12 flex items-center justify-center group juggling-icon juggling-icon-3">
+            <span class="sr-only">Facebook</span>
+            <svg fill="currentColor" viewBox="0 0 24 24" class="w-6 h-6 text-slate-300 group-hover:text-white transition-colors" aria-hidden="true">
+              <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
+            </svg>
+          </a>
+        </div>
+        <!-- YouTube -->
+        <div>
+          <a href="https://youtube.com/@itstauhidarafat" target="_blank" rel="noopener noreferrer" (click)="applyRipple($event)" class="has-ripple realistic-glass !rounded-full w-12 h-12 flex items-center justify-center group juggling-icon juggling-icon-4">
+            <span class="sr-only">YouTube</span>
+            <svg fill="currentColor" viewBox="0 0 24 24" class="w-6 h-6 text-slate-300 group-hover:text-white transition-colors" aria-hidden="true">
+              <path fill-rule="evenodd" d="M19.812 5.418c.861.23 1.538.907 1.768 1.768C21.998 8.78 22 12 22 12s0 3.22-.42 4.814c-.23.861-.907 1.538-1.768 1.768C18.218 19 12 19 12 19s-6.218 0-7.812-.42c-.861-.23-1.538-.907-1.768-1.768C2.002 15.22 2 12 2 12s0-3.22.42-4.814c.23-.861.907-1.538-1.768-1.768C3.782 5 12 5 12 5s6.218 0 7.812.418zM9.57 15.15V8.85l6.3 3.15-6.3 3.15z" clip-rule="evenodd" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer-glass">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-slate-400">
+        <p class="text-sm">
+          &copy; 2025 TAUHiD ARAFAT. All rights reserved.
+        </p>
+      </div>
+    </footer>
+  </div>
+</div>
